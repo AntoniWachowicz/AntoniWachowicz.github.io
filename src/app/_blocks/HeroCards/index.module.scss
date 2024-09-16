@@ -1,0 +1,68 @@
+@import '../../_css/common';
+
+.heroCards {
+  justify-content: space-between;
+  gap: var(--base);
+  margin-top: calc(var(--base) * -8); // Adjust this value to overlap with the hero section
+  position: relative;
+  z-index: 2;
+
+  @include mid-break {
+    flex-direction: row;
+  }
+}
+
+.cardWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1;
+  gap: 60px;
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+  background-color: var(--color-base-0);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: var(--base);
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+}
+
+.iconWrapper {
+  width: 60px;
+  height: 60px;
+  margin-bottom: calc(var(--base) / 2);
+  margin-left: auto;
+  margin-right: auto;
+;}
+
+.title {
+  margin-bottom: calc(var(--base) / 2);
+  margin-top: 50px;
+  font-weight: bold;
+}
+
+.description {
+  margin-bottom: var(--base);
+}
+
+.link {
+  margin-top: auto;
+  padding: calc(var(--base) / 2) var(--base);
+  background-color: var(--color-dark-500);
+  color: var(--color-base-0);
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-dark-600);
+  }
+}

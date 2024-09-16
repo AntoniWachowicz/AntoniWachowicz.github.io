@@ -1,0 +1,65 @@
+@import '../../_css/common';
+
+.background {
+  box-shadow: inset 0px 5px 5px #ccc;
+  padding: 40px 0px;
+  background-color: #eee;
+  overflow: hidden;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr );
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #aaa;
+  grid-column: span 2;
+  margin-bottom: 20px;
+}
+
+.richText {
+  grid-column: 1 ;
+}
+
+.list {
+  grid-column: -1 / -2;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: 3fr 40px 6fr;
+  padding-bottom: 30px;
+}
+
+.dateNumber {
+  display: float;
+  p {
+  float: right;
+  }
+}
+
+.pointer {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--green);
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: visible;
+
+  div {
+    width: 3px;
+    height: 1000px;
+    background-color: var(--green);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

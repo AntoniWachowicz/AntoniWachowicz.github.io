@@ -1,0 +1,23 @@
+@use '../../_css/queries.scss' as *;
+
+.allCounties {
+  display: flex;
+  justify-content: center;
+  border-radius: 13px;
+  box-shadow: 0px  4px 9px 1px #ccc;
+  padding: var(--base);
+}
+
+.single {
+  padding: 20px;
+}
+
+.crest {
+  width: 100px;
+  margin: 0px auto;
+}
+
+.countyName {
+  margin: 5px auto;
+  text-align: center;
+}

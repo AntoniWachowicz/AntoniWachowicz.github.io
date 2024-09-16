@@ -1,0 +1,35 @@
+@use '../../../_css/queries.scss' as *;
+
+.nav {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  opacity: 1;
+  transition: opacity 100ms linear;
+  visibility: visible;
+}
+
+.navLinks {
+  display: flex;
+  gap: calc(var(--base) / 4) var(--base);
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  > * {
+    text-decoration: none;
+    color: white !important;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 0.8;
+      color: white !important; // Upewniamy się, że kolor pozostaje biały nawet przy hover
+      text-decoration: underline;
+    }
+  }
+}
+
+.hide {
+  opacity: 0;
+  visibility: hidden;
+}
