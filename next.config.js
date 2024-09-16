@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const ContentSecurityPolicy = require('./csp')
-const redirects = require('./redirects')
+// const redirects = require('./redirects')
 
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
   swcMinify: true,
   images: {
@@ -10,7 +11,7 @@ const nextConfig = {
       .filter(Boolean)
       .map(url => url.replace(/https?:\/\//, '')),
   },
-  redirects,
+  // redirects,
 
   // async rewrites() {
   //   return [
