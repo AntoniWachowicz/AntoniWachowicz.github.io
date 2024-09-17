@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import dotenv from 'dotenv'
+import express from 'express'
 import next from 'next'
 import nextBuild from 'next/dist/build'
 import path from 'path'
+import payload from 'payload'
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
 })
-
-import express from 'express'
-import payload from 'payload'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -39,6 +39,9 @@ const start = async (): Promise<void> => {
   })
 
   const nextHandler = nextApp.getRequestHandler()
+
+  // Add this line to handle Payload admin routes before Next.js routes
+  app.use('/admin', (req, res, next) => payload.authenticate(req, res, next))
 
   app.use((req, res) => nextHandler(req, res))
 

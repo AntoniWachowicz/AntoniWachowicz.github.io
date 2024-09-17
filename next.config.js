@@ -12,6 +12,13 @@ const nextConfig = {
   },
   redirects,
 
+  rewrites: async () => [
+    {
+      source: '/admin/:path*',
+      destination: '/api/admin/:path*',
+    },
+  ],
+
   async headers() {
     const headers = []
 
