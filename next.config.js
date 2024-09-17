@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const ContentSecurityPolicy = require('./csp')
-// const redirects = require('./redirects')
+const redirects = require('./redirects')
 
 const nextConfig = {
   reactStrictMode: true,
@@ -10,16 +10,7 @@ const nextConfig = {
       .filter(Boolean)
       .map(url => url.replace(/https?:\/\//, '')),
   },
-  // redirects,
-
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/',
-  //       destination: '/home',
-  //     },
-  //   ]
-  // },
+  redirects,
 
   async headers() {
     const headers = []
