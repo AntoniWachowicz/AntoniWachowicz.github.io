@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import dotenv from 'dotenv'
 import express from 'express'
 import next from 'next'
@@ -39,11 +40,10 @@ const start = async (): Promise<void> => {
 
   const nextHandler = nextApp.getRequestHandler()
 
-  // Handle all Payload routes
-  app.use(payload.authenticate)
+  // Add this line to handle Payload admin routes before Next.js routes
+  app.use('/admin', (req, res, next) => payload.authenticate(req, res, next))
 
-  // Handle Next.js routes
-  app.all('*', (req, res) => nextHandler(req, res))
+  app.use((req, res) => nextHandler(req, res))
 
   nextApp.prepare().then(() => {
     payload.logger.info('Starting Next.js...')
