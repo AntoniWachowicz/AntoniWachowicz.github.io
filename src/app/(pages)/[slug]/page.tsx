@@ -14,7 +14,7 @@ import { generateMeta } from '../../_utilities/generateMeta'
 // Payload Cloud caches all files through its CDN automatically
 export const revalidate = 0
 
-export default async function generateMetaPage({ params: { slug } }) {
+export default async function Page({ params: { slug } }) {
   const pageSlug = slug && slug.length > 0 ? slug : 'home'
   console.log('Attempting to fetch page with slug:', pageSlug)
 
