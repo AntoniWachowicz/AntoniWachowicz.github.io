@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable prettier/prettier */
 // import type { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
 // import type { Config } from '../../payload/payload-types'
@@ -80,8 +78,6 @@ export const fetchDoc = async <T>(args: {
 }): Promise<T> => {
   const { collection, slug, id, draft } = args || {}
 
-  console.log('fetchDoc called with:', { collection, slug, id, draft });
-
   let token: RequestCookie | undefined
 
   if (draft) {
@@ -92,11 +88,9 @@ export const fetchDoc = async <T>(args: {
   const queryParam = slug ? `slug=${slug}` : id ? `id=${id}` : ''
   const draftParam = draft ? '&draft=true' : ''
 
-  const url = `${GRAPHQL_API_URL}/api/${collection}?where[${queryParam}]${draftParam}`
-  console.log('Fetching from URL:', url);
-
-  try {
-    const response = await fetch(url, {
+  const doc: T = await fetch(
+    `${GRAPHQL_API_URL}/api/${collection}?where[${queryParam}]${draftParam}`,
+    {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -104,33 +98,22 @@ export const fetchDoc = async <T>(args: {
       },
       cache: 'no-store',
       next: { tags: [`${collection}_${slug || id}`] },
-    });
+    },
+  )
+    .then(res => {
+      if (!res.ok) throw new Error(`Error fetching doc: ${res.statusText}`)
+      return res.json()
+    })
+    .then(res => {
+      if (res.errors) throw new Error(res?.errors?.[0]?.message ?? 'Error fetching doc')
+      return res?.docs?.[0]
+    })
 
-    if (!response.ok) {
-      console.error('Fetch error:', response.status, response.statusText);
-      throw new Error(`Error fetching doc: ${response.statusText}`);
-    }
-
-    const responseData = await response.json();
-    console.log('Response data:', responseData);
-
-    if (responseData.errors) {
-      console.error('API returned errors:', responseData.errors);
-      throw new Error(responseData?.errors?.[0]?.message ?? 'Error fetching doc');
-    }
-
-    const doc = responseData?.docs?.[0];
-
-    if (!doc) {
-      console.error('No document found in response');
-      throw new Error(
-        `No document found for ${collection} with ${slug ? `slug "${slug}"` : `id "${id}"`}`,
-      );
-    }
-
-    return doc;
-  } catch (error: unknown) {
-    console.error('Error in fetchDoc:', error);
-    throw error;
+  if (!doc) {
+    throw new Error(
+      `No document found for ${collection} with ${slug ? `slug "${slug}"` : `id "${id}"`}`,
+    )
   }
+
+  return doc
 }
