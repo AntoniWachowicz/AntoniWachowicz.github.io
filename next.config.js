@@ -10,7 +10,7 @@ const nextConfig = {
       .filter(Boolean)
       .map(url => url.replace(/https?:\/\//, '')),
   },
-  redirects,
+  // redirects,
 
   // async rewrites() {
   //   return [
