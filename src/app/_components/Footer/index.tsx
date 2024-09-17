@@ -21,13 +21,13 @@ export async function Footer() {
     // console.error(error)
   }
 
-  const navItems = footer?.navItems || []
+  const navItems = footer?.colums || []
 
   return (
     <footer className={classes.footer}>
       <Gutter className={classes.wrap}>
         <nav className={classes.nav}>
-          {navItems.map(({ link }, i) => {
+          {navItems.map(({ id }, i) => {
             return <RichText content={navItems} />
           })}
         </nav>
