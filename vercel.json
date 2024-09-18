@@ -1,11 +1,27 @@
 {
-  "buildCommand": "yarn build",
-  "outputDirectory": "dist",
-  "devCommand": "yarn dev",
-  "installCommand": "yarn install",
-  "framework": "nextjs",
-  "rewrites": [
-    { "source": "/admin/:path*", "destination": "/api/[...payload]" },
-    { "source": "/api/:path*", "destination": "/api/[...payload]" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/server.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/admin/(.*)",
+      "dest": "src/server.ts"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "src/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "src/server.ts"
+    }
   ]
 }

@@ -12,16 +12,16 @@ const nextConfig = {
   },
   redirects,
 
-  rewrites: async () => [
-    {
-      source: '/admin/:path*',
-      destination: '/api/[...payload]',
-    },
-    {
-      source: '/api/:path*',
-      destination: '/api/[...payload]',
-    },
-  ],
+  // rewrites: async () => [
+  //   {
+  //     source: '/admin/:path*',
+  //     destination: '/api/[...payload]',
+  //   },
+  //   {
+  //     source: '/api/:path*',
+  //     destination: '/api/[...payload]',
+  //   },
+  // ],
 
   async headers() {
     const headers = []
