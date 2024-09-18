@@ -12,6 +12,10 @@ dotenv.config({
 const app = express()
 const PORT = process.env.PORT || 3000
 
+app.get('/', (_, res) => {
+  res.redirect('/admin')
+})
+
 const start = async (): Promise<void> => {
   await payload.init({
     secret: process.env.PAYLOAD_SECRET || '',
@@ -37,13 +41,13 @@ const start = async (): Promise<void> => {
     port: Number(PORT),
   })
 
-  const nextHandler = nextApp.getRequestHandler()
+  // const nextHandler = nextApp.getRequestHandler()
 
   // Handle all Payload routes
-  app.use(payload.authenticate)
+  // app.use(payload.authenticate)
 
   // Handle Next.js routes
-  app.all('*', (req, res) => nextHandler(req, res))
+  // app.all('*', (req, res) => nextHandler(req, res))
 
   nextApp.prepare().then(() => {
     payload.logger.info('Starting Next.js...')
