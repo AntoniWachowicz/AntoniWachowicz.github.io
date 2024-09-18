@@ -6,7 +6,7 @@ import redirects from '@payloadcms/plugin-redirects'
 import seo from '@payloadcms/plugin-seo'
 import type { GenerateTitle } from '@payloadcms/plugin-seo/types'
 import { slateEditor } from '@payloadcms/richtext-slate'
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 import path from 'path'
 import { buildConfig } from 'payload/config'
 
@@ -26,9 +26,9 @@ const generateTitle: GenerateTitle = () => {
   return 'My Website'
 }
 
-dotenv.config({
-  path: path.resolve(__dirname, '../../.env'),
-})
+// dotenv.config({
+//   path: path.resolve(__dirname, '../../.env'),
+// })
 
 export default buildConfig({
   admin: {
@@ -67,9 +67,9 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
-  graphQL: {
-    schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
-  },
+  // graphQL: {
+  //   schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
+  // },
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [

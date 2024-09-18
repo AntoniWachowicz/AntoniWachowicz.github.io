@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import express from 'express'
-import nextJS from 'next'
+import next from 'next'
 import nextBuild from 'next/dist/build'
 import path from 'path'
 import payload from 'payload'
@@ -11,10 +11,6 @@ dotenv.config({
 
 const app = express()
 const PORT = process.env.PORT || 3000
-
-app.get('/', (_, res) => {
-  res.redirect('/admin')
-})
 
 const start = async (): Promise<void> => {
   await payload.init({
@@ -36,7 +32,7 @@ const start = async (): Promise<void> => {
     return
   }
 
-  const nextApp = nextJS({
+  const nextApp = next({
     dev: process.env.NODE_ENV !== 'production',
     port: Number(PORT),
   })
@@ -44,18 +40,10 @@ const start = async (): Promise<void> => {
   const nextHandler = nextApp.getRequestHandler()
 
   // Handle all Payload routes
-  // app.use(payload.authenticate)
+  app.use(payload.authenticate)
 
   // Handle Next.js routes
-  // app.all('*', (req, res) => nextHandler(req, res))
-
-  app.use((req, res, next) => {
-    const isAdminRoute = req.url.startsWith('/admin') || req.url.startsWith('/api')
-    if (isAdminRoute) {
-      return payload.authenticate(req, res, next)
-    }
-    return nextHandler(req, res)
-  })
+  app.all('*', (req, res) => nextHandler(req, res))
 
   nextApp.prepare().then(() => {
     payload.logger.info('Starting Next.js...')
