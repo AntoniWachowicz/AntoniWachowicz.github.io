@@ -61,6 +61,12 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
+  cors: [
+    'https://lgdbudujrazem.vercel.app',
+    'https://lgdbudujrazem-8blrevqho-antoniwachowiczs-projects.vercel.app',
+    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+    // Add any other allowed origins
+  ],
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://lgdbudujrazem.vercel.app',
   collections: [Pages, Posts, Projects, Media, Categories, Users],
   globals: [Settings, Header, Footer],
@@ -70,7 +76,6 @@ export default buildConfig({
   // graphQL: {
   //   schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   // },
-  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
     // The seed endpoint is used to populate the database with some example data
