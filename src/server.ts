@@ -1,20 +1,33 @@
-import dotenv from 'dotenv'
+/* eslint-disable @typescript-eslint/no-shadow */
+import cors from 'cors'
+// import dotenv from 'dotenv'
 import express from 'express'
 import next from 'next'
 import nextBuild from 'next/dist/build'
 import path from 'path'
 import payload from 'payload'
 
-dotenv.config({
-  path: path.resolve(__dirname, '../.env'),
-})
+// dotenv.config({
+//   path: path.resolve(__dirname, '../.env'),
+// })
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
+app.use(
+  cors({
+    origin: [
+      process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+      'https://lgdbudujrazem.vercel.app',
+      'https://lgdbudujrazem-6mcljy21z-antoniwachowiczs-projects.vercel.app',
+    ].filter(Boolean),
+    credentials: true,
+  }),
+)
+
 const start = async (): Promise<void> => {
   await payload.init({
-    secret: process.env.PAYLOAD_SECRET,
+    secret: process.env.PAYLOAD_SECRET || '',
     express: app,
     onInit: () => {
       payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
@@ -44,6 +57,17 @@ const start = async (): Promise<void> => {
 
   // Handle Next.js routes
   app.all('*', (req, res) => nextHandler(req, res))
+
+  app.use('/api', (req, res, next) => {
+    if (req.url.startsWith('/api/admin') || req.url.startsWith('/api/globals')) {
+      return payload.authenticate(req, res, next)
+    }
+    return nextHandler(req, res)
+  })
+
+  app.use('/admin', (req, res, next) => {
+    return payload.authenticate(req, res, next)
+  })
 
   nextApp.prepare().then(() => {
     payload.logger.info('Starting Next.js...')
