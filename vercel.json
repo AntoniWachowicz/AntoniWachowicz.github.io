@@ -5,7 +5,7 @@
   "installCommand": "yarn install",
   "framework": "nextjs",
   "rewrites": [
-    { "source": "/admin/(.*)", "destination": "/api/[...payload]" },
-    { "source": "/api/(.*)", "destination": "/api/[...payload]" }
+    { "source": "/admin/:path*", "destination": "/api/[...payload]" },
+    { "source": "/api/:path*", "destination": "/api/[...payload]" }
   ]
 }
