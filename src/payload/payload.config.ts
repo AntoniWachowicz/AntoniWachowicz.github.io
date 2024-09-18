@@ -61,7 +61,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://lgdbudujrazem.vercel.app',
   collections: [Pages, Posts, Projects, Media, Categories, Users],
   globals: [Settings, Header, Footer],
   typescript: {
