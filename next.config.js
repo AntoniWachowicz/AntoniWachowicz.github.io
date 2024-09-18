@@ -42,12 +42,15 @@ const nextConfig = {
     // It works by explicitly whitelisting trusted sources of content for your website
     // This will block all inline scripts and styles except for those that are allowed
     headers.push({
-      source: '/(.*)',
+      source: '/api/:path*',
       headers: [
+        { key: 'Access-Control-Allow-Credentials', value: 'true' },
+        { key: 'Access-Control-Allow-Origin', value: '*' }, // Change this to specific domains in production
+        { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST,PUT' },
         {
-          key: 'Content-Security-Policy',
+          key: 'Access-Control-Allow-Headers',
           value:
-            "default-src 'self'; connect-src 'self' https://maps.googleapis.com https://lgdbudujrazem.vercel.app; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
+            'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
         },
       ],
     })

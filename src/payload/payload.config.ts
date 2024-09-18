@@ -61,12 +61,6 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
-  cors: [
-    'https://lgdbudujrazem.vercel.app',
-    'https://lgdbudujrazem-8blrevqho-antoniwachowiczs-projects.vercel.app',
-    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
-    // Add any other allowed origins
-  ],
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://lgdbudujrazem.vercel.app',
   collections: [Pages, Posts, Projects, Media, Categories, Users],
   globals: [Settings, Header, Footer],
@@ -76,7 +70,16 @@ export default buildConfig({
   // graphQL: {
   //   schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   // },
-  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  cors: [
+    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+    'https://lgdbudujrazem.vercel.app',
+    'https://lgdbudujrazem-6mcljy21z-antoniwachowiczs-projects.vercel.app',
+  ].filter(Boolean),
+  csrf: [
+    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+    'https://lgdbudujrazem.vercel.app',
+    'https://lgdbudujrazem-6mcljy21z-antoniwachowiczs-projects.vercel.app',
+  ].filter(Boolean),
   endpoints: [
     // The seed endpoint is used to populate the database with some example data
     // You should delete this endpoint before deploying your site to production
