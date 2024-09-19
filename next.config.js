@@ -14,6 +14,15 @@ const nextConfig = {
 
   rewrites: async () => [],
 
+  webpack: config => {
+    config.experiments = {
+      ...config.experiments,
+      topLevelAwait: true,
+    }
+    config.externals = [...config.externals, 'payload']
+    return config
+  },
+
   async headers() {
     const headers = []
 
