@@ -14,8 +14,12 @@ const nextConfig = {
 
   rewrites: async () => [
     {
+      source: '/admin',
+      destination: '/admin',
+    },
+    {
       source: '/admin/:path*',
-      destination: '/api/admin/:path*',
+      destination: '/admin/:path*',
     },
     {
       source: '/api/:path*',

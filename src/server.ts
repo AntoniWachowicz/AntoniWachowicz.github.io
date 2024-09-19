@@ -1,15 +1,9 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import cors from 'cors'
-// import dotenv from 'dotenv'
 import express from 'express'
 import next from 'next'
 import nextBuild from 'next/dist/build'
 import path from 'path'
 import payload from 'payload'
-
-// dotenv.config({
-//   path: path.resolve(__dirname, '../.env'),
-// })
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -41,7 +35,6 @@ const start = async (): Promise<void> => {
       await nextBuild(path.join(__dirname, '../'))
       process.exit()
     })
-
     return
   }
 
@@ -52,21 +45,16 @@ const start = async (): Promise<void> => {
 
   const nextHandler = nextApp.getRequestHandler()
 
-  // Handle all Payload routes
+  // Handle Payload routes
+  app.use('/admin', payload.authenticate)
   app.use(payload.authenticate)
 
   // Handle Next.js routes
-  app.all('*', (req, res) => nextHandler(req, res))
-
-  app.use('/api', (req, res, next) => {
-    if (req.url.startsWith('/api/admin') || req.url.startsWith('/api/globals')) {
-      return payload.authenticate(req, res, next)
+  app.all('*', (req, res) => {
+    if (req.url.startsWith('/admin') || req.url.startsWith('/api')) {
+      return payload.authenticate(req, res, () => nextHandler(req, res))
     }
     return nextHandler(req, res)
-  })
-
-  app.use('/admin', (req, res, next) => {
-    return payload.authenticate(req, res, next)
   })
 
   nextApp.prepare().then(() => {
