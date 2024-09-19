@@ -1,16 +1,13 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-shadow */
-import { webpackBundler } from '@payloadcms/bundler-webpack'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { webpackBundler } from '@payloadcms/bundler-webpack' // bundler-import
+import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import
 import { payloadCloud } from '@payloadcms/plugin-cloud'
 import nestedDocs from '@payloadcms/plugin-nested-docs'
 import redirects from '@payloadcms/plugin-redirects'
 import seo from '@payloadcms/plugin-seo'
 import type { GenerateTitle } from '@payloadcms/plugin-seo/types'
-import { slateEditor } from '@payloadcms/richtext-slate'
+import { slateEditor } from '@payloadcms/richtext-slate' // editor-import
+import dotenv from 'dotenv'
 import path from 'path'
-import type { Payload } from 'payload'
-import payload from 'payload'
 import { buildConfig } from 'payload/config'
 
 import Categories from './collections/Categories'
@@ -29,12 +26,20 @@ const generateTitle: GenerateTitle = () => {
   return 'My Website'
 }
 
-const config = buildConfig({
+dotenv.config({
+  path: path.resolve(__dirname, '../../.env'),
+})
+
+export default buildConfig({
   admin: {
     user: Users.slug,
-    bundler: webpackBundler(),
+    bundler: webpackBundler(), // bundler-config
     components: {
+      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
+      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
       beforeLogin: [BeforeLogin],
+      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
+      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: [BeforeDashboard],
     },
     webpack: config => ({
@@ -52,26 +57,27 @@ const config = buildConfig({
       },
     }),
   },
-  editor: slateEditor({}),
+  editor: slateEditor({}), // editor-config
+  // database-adapter-config-start
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://lgdbudujrazem.vercel.app',
+  // database-adapter-config-end
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
   collections: [Pages, Posts, Projects, Media, Categories, Users],
   globals: [Settings, Header, Footer],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
-  cors: [
-    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
-    'https://lgdbudujrazem.vercel.app',
-    'https://lgdbudujrazem-6mcljy21z-antoniwachowiczs-projects.vercel.app',
-  ].filter(Boolean),
-  csrf: [
-    process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
-    'https://lgdbudujrazem.vercel.app',
-    'https://lgdbudujrazem-6mcljy21z-antoniwachowiczs-projects.vercel.app',
-  ].filter(Boolean),
+  graphQL: {
+    schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
+  },
+  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  endpoints: [
+    // The seed endpoint is used to populate the database with some example data
+    // You should delete this endpoint before deploying your site to production
+  ],
   plugins: [
     redirects({
       collections: ['pages', 'posts'],
@@ -87,24 +93,3 @@ const config = buildConfig({
     payloadCloud(),
   ],
 })
-
-export default config
-
-let cachedPayload: Payload | null = null
-
-export const getPayload = async (): Promise<Payload> => {
-  if (!process.env.PAYLOAD_SECRET) {
-    throw new Error('PAYLOAD_SECRET environment variable is missing')
-  }
-
-  if (!cachedPayload) {
-    await payload.init({
-      secret: process.env.PAYLOAD_SECRET,
-      config,
-      local: process.env.NEXT_PUBLIC_SERVER_URL === 'http://localhost:3000',
-    })
-    cachedPayload = payload
-  }
-
-  return cachedPayload
-}
