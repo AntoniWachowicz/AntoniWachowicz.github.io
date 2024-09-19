@@ -12,20 +12,7 @@ const nextConfig = {
   },
   redirects,
 
-  rewrites: async () => [
-    {
-      source: '/admin',
-      destination: '/admin',
-    },
-    {
-      source: '/admin/:path*',
-      destination: '/admin/:path*',
-    },
-    {
-      source: '/api/:path*',
-      destination: '/api/:path*',
-    },
-  ],
+  rewrites: async () => [],
 
   async headers() {
     const headers = []
@@ -51,14 +38,11 @@ const nextConfig = {
     // This will block all inline scripts and styles except for those that are allowed
     headers.push({
       source: '/api/:path*',
+      source: '/(admin|api)/:path*',
       headers: [
-        { key: 'Access-Control-Allow-Credentials', value: 'true' },
-        { key: 'Access-Control-Allow-Origin', value: '*' }, // Change this to specific domains in production
-        { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST,PUT' },
         {
-          key: 'Access-Control-Allow-Headers',
-          value:
-            'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+          key: 'x-next-handled',
+          value: 'false',
         },
       ],
     })

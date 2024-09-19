@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import cors from 'cors'
 import express from 'express'
 import next from 'next'
@@ -46,14 +47,10 @@ const start = async (): Promise<void> => {
   const nextHandler = nextApp.getRequestHandler()
 
   // Handle Payload routes
-  app.use('/admin', payload.authenticate)
   app.use(payload.authenticate)
 
   // Handle Next.js routes
   app.all('*', (req, res) => {
-    if (req.url.startsWith('/admin') || req.url.startsWith('/api')) {
-      return payload.authenticate(req, res, () => nextHandler(req, res))
-    }
     return nextHandler(req, res)
   })
 
